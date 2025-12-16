@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
-import type { PrismaClient } from "@prisma/client";
 import { getCurrentUser } from "@/lib/auth";
 import { setFamilyCookie } from "@/lib/family";
 
@@ -32,7 +31,9 @@ export async function POST(req: Request) {
   if (isMember) {
     return NextResponse.json({ error: "Conflict" }, { status: 409 });
   }
-  await prisma.$transaction(async (tx: Omit<PrismaClient, "$connect" | "$disconnect" | "$on" | "$transaction" | "$extends">) => {
+  type TxFn = Extract<Parameters<typeof prisma.$transaction>[0], (arg: any) => any>;
+  type TxParam = TxFn extends (arg: infer P) => any ? P : never;
+  await prisma.$transaction(async (tx: TxParam) => {
     await tx.membership.create({
       data: {
         userId: user.id,
