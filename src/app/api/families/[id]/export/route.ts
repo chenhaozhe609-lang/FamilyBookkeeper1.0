@@ -53,7 +53,7 @@ export async function GET(_: NextRequest, { params }: { params: Promise<{ id: st
     include: { user: { select: { name: true } } },
   });
   const headers = ["Date", "Type", "Amount", "Note", "Creator Name", "Created At"];
-  const rows = txs.map((t) => {
+  const rows = txs.map((t: { type: "INCOME" | "EXPENSE"; amount: number; description?: string | null; user?: { name?: string | null }; occurredAt: Date; createdAt: Date }) => {
     const type = t.type === "INCOME" ? "income" : "expense";
     const amount = (t.amount / 100).toFixed(2);
     const note = t.description ?? "";
