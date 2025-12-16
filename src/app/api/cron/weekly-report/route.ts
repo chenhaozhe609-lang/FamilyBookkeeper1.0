@@ -20,8 +20,8 @@ export async function GET() {
       where: { familyId: fam.id, occurredAt: { gte: start, lt: end } },
     });
     if (count === 0) continue;
-    const income = grouped.find((g) => g.type === "INCOME")?._sum.amount ?? 0;
-    const expense = grouped.find((g) => g.type === "EXPENSE")?._sum.amount ?? 0;
+    const income = grouped.find((g: { type: "INCOME" | "EXPENSE"; _sum: { amount: number | null } }) => g.type === "INCOME")?._sum.amount ?? 0;
+    const expense = grouped.find((g: { type: "INCOME" | "EXPENSE"; _sum: { amount: number | null } }) => g.type === "EXPENSE")?._sum.amount ?? 0;
     const balance = income - expense;
     const members = await prisma.membership.findMany({
       where: { familyId: fam.id },
