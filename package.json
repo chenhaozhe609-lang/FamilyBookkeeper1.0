@@ -10,8 +10,10 @@
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "prisma:generate": "prisma generate"
+    "prisma:generate": "prisma generate",
+    "postinstall": "prisma generate"
   },
+  "packageManager": "pnpm@10.25.0",
   "dependencies": {
     "@prisma/client": "^7.1.0",
     "@prisma/adapter-better-sqlite3": "^7.1.0",
