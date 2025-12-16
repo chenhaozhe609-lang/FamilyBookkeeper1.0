@@ -29,7 +29,7 @@ export async function GET() {
     });
     const recipients = members
       .map((m: { user: { email: string } }) => m.user.email)
-      .filter((e) => typeof e === "string" && e.length > 0);
+      .filter((e: string) => e.length > 0);
     const { subject, text } = buildWeeklyEmail(fam.name, fam.currency, income, expense, balance, count);
     for (const to of recipients) {
       await sendEmail(to, subject, text);
