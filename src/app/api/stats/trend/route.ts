@@ -46,8 +46,8 @@ export async function GET(req: Request) {
       where: { familyId: ctx.family.id, occurredAt: { gte: start, lt: end } },
       _sum: { amount: true },
     });
-    const income = grouped.find((g) => g.type === "INCOME")?._sum.amount ?? 0;
-    const expense = grouped.find((g) => g.type === "EXPENSE")?._sum.amount ?? 0;
+    const income = grouped.find((g: { type: "INCOME" | "EXPENSE"; _sum: { amount: number | null } }) => g.type === "INCOME")?._sum.amount ?? 0;
+    const expense = grouped.find((g: { type: "INCOME" | "EXPENSE"; _sum: { amount: number | null } }) => g.type === "EXPENSE")?._sum.amount ?? 0;
     result.push({
       year: start.getUTCFullYear(),
       month: start.getUTCMonth() + 1,
@@ -58,4 +58,3 @@ export async function GET(req: Request) {
 
   return NextResponse.json(result, { status: 200 });
 }
-

@@ -46,8 +46,8 @@ export async function GET(req: Request) {
     },
     _sum: { amount: true },
   });
-  const income = grouped.find((g) => g.type === "INCOME")?._sum.amount ?? 0;
-  const expense = grouped.find((g) => g.type === "EXPENSE")?._sum.amount ?? 0;
+  const income = grouped.find((g: { type: "INCOME" | "EXPENSE"; _sum: { amount: number | null } }) => g.type === "INCOME")?._sum.amount ?? 0;
+  const expense = grouped.find((g: { type: "INCOME" | "EXPENSE"; _sum: { amount: number | null } }) => g.type === "EXPENSE")?._sum.amount ?? 0;
   const balance = income - expense;
   return NextResponse.json({ year, month, income, expense, balance }, { status: 200 });
 }
