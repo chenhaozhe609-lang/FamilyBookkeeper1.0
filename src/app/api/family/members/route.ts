@@ -17,7 +17,7 @@ export async function GET() {
     include: { user: { select: { id: true, name: true, email: true } } },
     orderBy: { joinedAt: "asc" },
   });
-  const data = rows.map((m) => ({
+  const data = rows.map((m: { userId: string; role: "OWNER" | "MEMBER"; joinedAt: Date; user: { id: string; name: string; email: string } }) => ({
     userId: m.userId,
     name: m.user.name,
     email: m.user.email,
@@ -26,4 +26,3 @@ export async function GET() {
   }));
   return NextResponse.json({ members: data }, { status: 200 });
 }
-
