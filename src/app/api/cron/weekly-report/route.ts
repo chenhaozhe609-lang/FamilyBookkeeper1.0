@@ -27,7 +27,9 @@ export async function GET() {
       where: { familyId: fam.id },
       include: { user: { select: { email: true } } },
     });
-    const recipients = members.map((m) => m.user.email).filter((e) => typeof e === "string" && e.length > 0);
+    const recipients = members
+      .map((m: { user: { email: string } }) => m.user.email)
+      .filter((e) => typeof e === "string" && e.length > 0);
     const { subject, text } = buildWeeklyEmail(fam.name, fam.currency, income, expense, balance, count);
     for (const to of recipients) {
       await sendEmail(to, subject, text);
